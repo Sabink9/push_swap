@@ -11,6 +11,7 @@ void	ft_putstr(char *str)
 		i++;
 	}
 }
+
 int	list_size(t_list *head)
 {
 	int	i = 0;

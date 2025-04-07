@@ -2,5 +2,5 @@
 
 void	push_swap(t_list *a)
 {
-	
+	t_list	*b = NULL;
 }

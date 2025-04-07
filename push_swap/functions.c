@@ -23,6 +23,7 @@ void	push(t_list **src, t_list **dest)
 	temp->next = *dest;
 	*dest = temp;
 }
+
 void	rotate(t_list	**x_stack)
 {
 	t_list	*first = *x_stack;
@@ -37,6 +38,7 @@ void	rotate(t_list	**x_stack)
 	*x_stack = (*x_stack)->next;
 	first->next = NULL;
 }
+
 void	reverse_rotate(t_list **x_stack)
 {
 	t_list	*current = *x_stack;
