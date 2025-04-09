@@ -1,10 +1,32 @@
 #include "push_swap.h"
 
+int	ft_atoi(char *str)
+{
+	int	i;
+	int	signe;
+	int	result;
+
+	i = 0;
+	signe = 1;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		if (str[i] == '-')
+			signe *= -1;
+		i++;
+	}
+	result = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return (result * signe);
+}
+
 void	ft_putstr(char *str)
 {
-	int i;
-    
-    i = 0;
+	int i = 0;
+
 	while (str[i])
 	{
 		write(1, &str[i], 1);
@@ -39,11 +61,14 @@ void	radix_sort(t_list **a, t_list **b)
 {
 	if (!*a)
 		return ;
+
 	int max_num = get_max(*a);
 	int max_bits = 0;
+
 	// Calcul du nombre de bits nécessaires
 	while ((max_num >> max_bits) != 0)
 		max_bits++;
+
 	int bit = 0;
 	while (bit < max_bits)
 	{
@@ -59,6 +84,7 @@ void	radix_sort(t_list **a, t_list **b)
 				pb(a, b);
 			i++;
 		}
+
 		// Tout ramener de B vers A (pa)
 		while (*b)
 			pa(a, b);

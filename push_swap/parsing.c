@@ -1,13 +1,14 @@
 #include "push_swap.h"
 
-void	print_list(t_list *a)
+int	has_duplicate(t_list *a, int value)
 {
-	while (a)
+	while (a != NULL)
 	{
-		printf("%d ", a->value);
+		if (a->value == value)
+			return (1); // Doublon trouvé
 		a = a->next;
 	}
-	printf("\n");
+	return (0); // Pas de doublon
 }
 
 void	insert_into_a(t_list **a, int argc, char **argv)
@@ -15,7 +16,7 @@ void	insert_into_a(t_list **a, int argc, char **argv)
 	int i = 1;
 	while (i < argc)
 	{
-		int value = atoi(argv[i]);
+		int value = ft_atoi(argv[i]);
 
 		// Vérifier les doublons avant d'insérer
 		if (has_duplicate(*a, value))
@@ -33,30 +34,33 @@ void	insert_into_a(t_list **a, int argc, char **argv)
 	}
 }
 
-int	has_duplicate(t_list *a, int value)
-{
-	while (a != NULL)
-	{
-		if (a->value == value)
-			return (1);
-		a = a->next;
-	}
-	return (0);
-}
-
+// Fonction pour vérifier si une chaîne est un entier valide
 int	is_valid_integer(const char *str)
 {
 	while (*str == ' ')
-		str++;
+		str++; // Ignore les espaces au début de la chaîne
+
 	if (*str == '\0')
-		return (0);
+		return (0); // Chaîne vide (pas un entier valide)
+
 	if (*str == '+' || *str == '-')
-		str++;
+		str++; // Ignore le signe + ou - si présent
+
 	while (*str != '\0')
 	{
-		if (*str < '0' || *str > '9')
-			return (0);
+		if (*str < '0' || *str > '9') // Vérifie que chaque caractère est un chiffre
+			return (0); // Ce n'est pas un entier valide
 		str++;
 	}
-	return (1);
+	return (1); // La chaîne est un entier valide
+}
+
+void	print_list(t_list *a)
+{
+	while (a)
+	{
+		printf("%d ", a->value);
+		a = a->next;
+	}
+	printf("\n");
 }

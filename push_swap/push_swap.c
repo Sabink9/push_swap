@@ -6,6 +6,7 @@ void	push_swap(t_list **a)
 
 	if (*a == NULL || (*a)->next == NULL)
 		return ;
+
 	// Pour les petites piles (2-5 éléments), utiliser un tri spécifique
 	if (ft_lstsize(*a) <= 5)
 	{
@@ -13,7 +14,9 @@ void	push_swap(t_list **a)
 		// (ex: tri par sélection avec rotations)
 	}
 	else
+	{
 		radix_sort(a, &b);
+	}
 }
 
 int	main(int argc, char **argv)

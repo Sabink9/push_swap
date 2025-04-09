@@ -26,5 +26,6 @@ int is_valid_integer(const char *str);
 void push_swap(t_list **a);
 void	print_list(t_list *a);
 void	ft_putstr(char *str);
+int	ft_atoi(char *str);
 
 #endif
