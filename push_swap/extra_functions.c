@@ -34,17 +34,6 @@ void	ft_putstr(char *str)
 	}
 }
 
-int	ft_lstsize(t_list *lst)
-{
-	int size = 0;
-	while (lst)
-	{
-		size++;
-		lst = lst->next;
-	}
-	return size;
-}
-
 int	get_max(t_list *a)
 {
 	int max = a->value;
@@ -65,7 +54,6 @@ void	radix_sort(t_list **a, t_list **b)
 	int max_num = get_max(*a);
 	int max_bits = 0;
 
-	// Calcul du nombre de bits nécessaires
 	while ((max_num >> max_bits) != 0)
 		max_bits++;
 
@@ -84,10 +72,13 @@ void	radix_sort(t_list **a, t_list **b)
 				pb(a, b);
 			i++;
 		}
-
-		// Tout ramener de B vers A (pa)
 		while (*b)
 			pa(a, b);
-		bit++; // Passer au bit suivant
+		bit++;
 	}
 }
+
+// void	insert_sort(t_list **a, t_list **b)
+// {
+// 	t_list *head = *a;
+// }

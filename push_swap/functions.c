@@ -54,3 +54,4 @@ void	rotate(t_list **x_stack)
 // 	last->next = *x_stack;
 // 	*x_stack = last;
 // }
+

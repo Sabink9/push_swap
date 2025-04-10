@@ -5,10 +5,10 @@ int	has_duplicate(t_list *a, int value)
 	while (a != NULL)
 	{
 		if (a->value == value)
-			return (1); // Doublon trouvé
+			return (1);
 		a = a->next;
 	}
-	return (0); // Pas de doublon
+	return (0);
 }
 
 void	insert_into_a(t_list **a, int argc, char **argv)
@@ -18,14 +18,11 @@ void	insert_into_a(t_list **a, int argc, char **argv)
 	{
 		int value = ft_atoi(argv[i]);
 
-		// Vérifier les doublons avant d'insérer
 		if (has_duplicate(*a, value))
 		{
 			write(2, "Error\n", 6);
-			exit(1); // Terminer le programme en cas de doublon
+			exit(1);
 		}
-
-		// Créer le nouveau noeud
 		t_list *new_node = malloc(sizeof(t_list));
 		new_node->value = value;
 		new_node->next = *a;
@@ -34,25 +31,24 @@ void	insert_into_a(t_list **a, int argc, char **argv)
 	}
 }
 
-// Fonction pour vérifier si une chaîne est un entier valide
 int	is_valid_integer(const char *str)
 {
 	while (*str == ' ')
-		str++; // Ignore les espaces au début de la chaîne
+		str++;
 
 	if (*str == '\0')
-		return (0); // Chaîne vide (pas un entier valide)
+		return (0); 
 
 	if (*str == '+' || *str == '-')
-		str++; // Ignore le signe + ou - si présent
+		str++; 
 
 	while (*str != '\0')
 	{
-		if (*str < '0' || *str > '9') // Vérifie que chaque caractère est un chiffre
-			return (0); // Ce n'est pas un entier valide
+		if (*str < '0' || *str > '9') 
+			return (0); 
 		str++;
 	}
-	return (1); // La chaîne est un entier valide
+	return (1); 
 }
 
 void	print_list(t_list *a)
@@ -63,4 +59,14 @@ void	print_list(t_list *a)
 		a = a->next;
 	}
 	printf("\n");
+}
+int	ft_lstsize(t_list *lst)
+{
+	int size = 0;
+	while (lst)
+	{
+		size++;
+		lst = lst->next;
+	}
+	return size;
 }
