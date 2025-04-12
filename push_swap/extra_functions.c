@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   extra_functions.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 18:59:56 by saciurus          #+#    #+#             */
+/*   Updated: 2025/04/12 18:59:57 by saciurus         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	ft_atoi(char *str)
@@ -25,8 +37,9 @@ int	ft_atoi(char *str)
 
 void	ft_putstr(char *str)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (str[i])
 	{
 		write(1, &str[i], 1);
@@ -34,51 +47,43 @@ void	ft_putstr(char *str)
 	}
 }
 
-int	get_max(t_list *a)
+int	higher_nbr(t_list *a)
 {
-	int max = a->value;
-	while (a)
+	int	value;
+
+	value = a->value;
+	while (a != NULL)
 	{
-		if (a->value > max)
-			max = a->value;
+		if (value < a->value)
+			value = a->value;
 		a = a->next;
 	}
-	return max;
+	return (value);
 }
 
-void	radix_sort(t_list **a, t_list **b)
+void	sort_in_a(t_list **a)
 {
-	if (!*a)
+	t_list	*mid;
+
+	mid = (*a)->next;
+	if ((*a) == NULL || (*a)->next == NULL)
 		return ;
-
-	int max_num = get_max(*a);
-	int max_bits = 0;
-
-	while ((max_num >> max_bits) != 0)
-		max_bits++;
-
-	int bit = 0;
-	while (bit < max_bits)
+	if ((*a)->value == higher_nbr(*a))
 	{
-		int i = 0;
-		int size = ft_lstsize(*a);
-
-		while (i < size)
-		{
-			int num = (*a)->value;
-			if ((num >> bit) & 1)
-				ra(a);
-			else
-				pb(a, b);
-			i++;
-		}
-		while (*b)
-			pa(a, b);
-		bit++;
+		ra(a);
+		if (mid->value > mid->next->value)
+			sa(a);
 	}
+	else if ((*a)->value < mid->value)
+	{
+		if (mid->value < mid->next->value)
+		{
+			rra(a);
+			sa(a);
+		}
+		else
+			rra(a);
+	}
+	else
+		sa(a);
 }
-
-// void	insert_sort(t_list **a, t_list **b)
-// {
-// 	t_list *head = *a;
-// }
