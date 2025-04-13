@@ -76,7 +76,7 @@ void	sort_in_a(t_list **a)
 	}
 	else if ((*a)->value < mid->value)
 	{
-		if (mid->value < mid->next->value)
+		if (mid->value > mid->next->value)
 		{
 			rra(a);
 			sa(a);
