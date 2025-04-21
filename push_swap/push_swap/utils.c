@@ -1,72 +1,72 @@
-#include "push_swap.h"
+#include "../push_swap.h"
 
-int stack_len(t_list *stack)
+int	stack_len(t_list *stack)
 {
-    int i;
+	int	count;
 
-    i = 0;
-    while (stack)
-    {
-        stack = stack->next;
-        i++;
-    }
-    return (i);
+	count = 0;
+	while (stack)
+	{
+		count++;
+		stack = stack->next;
+	}
+	return (count);
 }
 
-t_list *find_last(t_list *s)
+t_list	*find_last(t_list *stack)
 {
-    while (s && s->next)
-        s = s->next;
-    return (s);
+	if (!stack)
+		return (NULL);
+	while (stack->next)
+		stack = stack->next;
+	return (stack);
 }
 
-int stack_sorted(t_list *s)
+int	stack_sorted(t_list *stack)
 {
-    while (s && s->next)
-    {
-        if (s->nbr > s->next->nbr)
-            return (0);
-        s = s->next;
-    }
-    return (1);
+	if (!stack)
+		return (1);
+	while (stack->next)
+	{
+		if (stack->value > stack->next->value)
+			return (0);
+		stack = stack->next;
+	}
+	return (1);
 }
 
-t_list *find_min(t_list *s)
+t_list	*find_min(t_list *stack)
 {
-    long    min;
-    t_list  *m;
+	long	min;
+	t_list	*min_node;
 
-    if (!s)
-        return (NULL);
-    min = LONG_MAX;
-    while (s)
-    {
-        if (s->nbr < min)
-        {
-            min = s->nbr;
-            m = s;
-        }
-        s = s->next;
-    }
-    return (m);
+	min = LONG_MAX;
+	while (stack)
+	{
+		if (stack->value < min)
+		{
+			min = stack->value;
+			min_node = stack;
+		}
+		stack = stack->next;
+	}
+	return (min_node);
 }
 
-t_list *find_max(t_list *s)
+t_list	*find_max(t_list *stack)
 {
-    long    max;
-    t_list  *m;
+	long	max;
+	t_list	*max_node;
 
-    if (!s)
-        return (NULL);
-    max = LONG_MIN;
-    while (s)
-    {
-        if (s->nbr > max)
-        {
-            max = s->nbr;
-            m = s;
-        }
-        s = s->next;
-    }
-    return (m);
+	max = LONG_MIN;
+	while (stack)
+	{
+		if (stack->value > max)
+		{
+			max = stack->value;
+			max_node = stack;
+		}
+		stack = stack->next;
+	}
+	return (max_node);
 }

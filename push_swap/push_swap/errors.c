@@ -1,4 +1,4 @@
-#include "push_swap.h"
+#include "../push_swap.h"
 
 int     error_syntax(char *s)
 {
@@ -14,30 +14,32 @@ int     error_syntax(char *s)
 
 int     error_duplicate(t_list *a, int n)
 {
+    if (!a)
+        return (0);
     while (a)
     {
-        if (a->nbr == n)
+        if (a->value == n)
             return (1);
         a = a->next;
     }
     return (0);
 }
 
-void    free_stack(t_list **stack)
+void	free_stack(t_list **stack)
 {
-    t_list *cur;
-    t_list *tmp;
+	t_list	*tmp;
+	t_list	*current;
 
-    if (!stack || !*stack)
-        return;
-    cur = *stack;
-    while (cur)
-    {
-        tmp = cur->next;
-        free(cur);
-        cur = tmp;
-    }
-    *stack = NULL;
+	if (!stack)
+		return ;
+	current = *stack;
+	while (current)
+	{
+		tmp = current->next;
+		free(current);
+		current = tmp;
+	}
+	*stack = NULL;
 }
 
 void    free_errors(t_list **a)

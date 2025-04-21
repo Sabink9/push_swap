@@ -1,76 +1,66 @@
-#include "push_swap.h"
+#include "../push_swap.h"
 
-static int count_words(char *s, char c)
+static int	count_words(char *s, char c)
 {
-    int count;
-    int in;
+	int	count;
+	int	in_word;
 
-    count = 0;
-    while (*s)
-    {
-        in = 0;
-        while (*s == c)
-            s++;
-        while (*s && *s != c)
-        {
-            if (!in)
-            {
-                count++;
-                in = 1;
-            }
-            s++;
-        }
-    }
-    return (count);
+	count = 0;
+	in_word = 0;
+	while (*s)
+	{
+		if (*s != c && !in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
+	}
+	return (count);
 }
 
-static char *get_next_word(char *s, char c)
+static char	*get_next_word(char *s, char c)
 {
-    static int  cur;
-    char        *word;
-    int         len;
-    int         i;
+	static int	cursor;
+	char		*word;
+	int			len;
+	int			i;
 
-    len = 0;
-    i = 0;
-    while (s[cur] == c)
-        cur++;
-    while (s[cur + len] && s[cur + len] != c)
-        len++;
-    word = malloc(len + 1);
-    if (!word)
-        return (NULL);
-    while (s[cur] && s[cur] != c)
-        word[i++] = s[cur++];
-    word[i] = '\0';
-    return (word);
+	len = 0;
+	while (s[cursor] == c)
+		cursor++;
+	while (s[cursor + len] != c && s[cursor + len])
+		len++;
+	word = malloc(len + 1);
+	if (!word)
+		return (NULL);
+	i = 0;
+	while (s[cursor] != c && s[cursor])
+		word[i++] = s[cursor++];
+	word[i] = '\0';
+	return (word);
 }
 
-char **split(char *s, char c)
+char	**split(char *s, char c)
 {
-    char    **res;
-    int     wc;
-    int     i;
+	char	**result;
+	int		words;
+	int		i;
 
-    wc = count_words(s, c);
-    if (wc == 0)
-        exit(1);
-    res = malloc(sizeof(char *) * (wc + 2));
-    if (!res)
-        return (NULL);
-    i = 0;
-    while (wc-- >= 0)
-    {
-        if (i == 0)
-        {
-            res[i] = malloc(1);
-            if (!res[i])
-                return (NULL);
-            res[i++][0] = '\0';
-            continue;
-        }
-        res[i++] = get_next_word(s, c);
-    }
-    res[i] = NULL;
-    return (res);
+	words = count_words(s, c);
+	result = malloc(sizeof(char *) * (words + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (i < words)
+	{
+		result[i] = get_next_word(s, c);
+		if (!result[i])
+			return (NULL);
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
 }

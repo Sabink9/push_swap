@@ -16,10 +16,11 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct s_list
 {
-    int             nbr;
+    int             value;
     int             index;
     int             push_cost;
     int             above_median;
@@ -53,9 +54,16 @@ void    free_stack(t_list **stack);
 void    free_errors(t_list **a);
 
 //split
-char    **split(char *s, char c);
-void    init_stack_a(t_list **a, char **argv);
-void    append_node(t_list **stack, int n);
+static int	count_words(char *s, char c);
+static char	*get_next_word(char *s, char c);
+char	**split(char *s, char c);
+
+//stack
+static long ft_atoi(const char *s);
+static void	append_node(t_list **stack, int n);
+void	init_stack_a(t_list **a, char **argv);
+t_list	*get_cheapest(t_list *stack);
+void	prep_for_push(t_list **stack, t_list *top, char name);
 
 //utils
 int     stack_len(t_list *stack);
@@ -66,22 +74,29 @@ t_list  *find_max(t_list *stack);
 
 //cost
 void    current_index(t_list *stack);
+static void	set_target_a(t_list *a, t_list *b);
+static void	cost_analysis_a(t_list *a, t_list *b);
 void    init_nodes_a(t_list *a, t_list *b);
 void    init_nodes_b(t_list *a, t_list *b);
-void    set_target_a(t_list *a, t_list *b);
-void    cost_analysis_a(t_list *a, t_list *b);
 void    set_cheapest(t_list *stack);
+static void	set_target_b(t_list *a, t_list *b);
 
 //algorithms
 void    sort_three(t_list **a);
 void    sort_stacks(t_list **a, t_list **b);
 void    print_list(t_list *a);
 
+static void	move_a_to_b(t_list **a, t_list **b);
+static void	move_b_to_a(t_list **a, t_list **b);
+static void	min_on_top(t_list **a);
+
+
 //aff
 void    ft_putstr(char *str);
 void    ft_putchar(char c);
 void    ft_putnbr(int n);
 int     ft_isdigit(int c);
-static long ft_atol(const char *s);
+
+void	push_swap(t_list **a);
 
 #endif

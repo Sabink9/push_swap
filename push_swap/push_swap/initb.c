@@ -1,0 +1,34 @@
+#include "../push_swap.h"
+
+static void	set_target_b(t_list *a, t_list *b)
+{
+	t_list	*current_a;
+	t_list	*target_node;
+	long	best_match;
+
+	while (b)
+	{
+		best_match = LONG_MAX;
+		current_a = a;
+		while (current_a)
+		{
+			if (current_a->value > b->value && current_a->value < best_match)
+			{
+				best_match = current_a->value;
+				target_node = current_a;
+			}
+			current_a = current_a->next;
+		}
+		b->target_node = target_node;
+		if (best_match == LONG_MAX)
+			b->target_node = find_min(a);
+		b = b->next;
+	}
+}
+
+void	init_nodes_b(t_list *a, t_list *b)
+{
+	current_index(a);
+	current_index(b);
+	set_target_b(a, b);
+}
