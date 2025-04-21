@@ -42,22 +42,10 @@ void	rra(t_list **a)
 	ft_putstr("rra\n");
 }
 
-void	rb(t_list **b)
-{
-	rotate(b);
-	ft_putstr("rb\n");
-}
 void	rrb(t_list **b)
 {
 	reverse_rotate(b);
 	ft_putstr("rrb\n");
-}
-
-void	rr(t_list **a, t_list **b)
-{
-	rotate(a);
-	rotate(b);
-	ft_putstr("rr\n");
 }
 
 void	rrr(t_list **a, t_list **b)

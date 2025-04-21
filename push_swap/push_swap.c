@@ -1,43 +1,31 @@
 #include "push_swap.h"
 
-// void	push_swap(t_list **a)
-// {
-// 	t_list *b = NULL;
-
-// 	if (*a == NULL || (*a)->next == NULL)
-// 		return ;
-
-// 	// Pour les petites piles (2-5 éléments), utiliser un tri spécifique
-// 	if (ft_lstsize(*a) <= 5)
-// 	{
-// 		sort_in_a(a);
-// 	}
-// }
-
-int	main(int argc, char **argv)
+void push_swap(t_list **a)
 {
-	if (argc < 2)
-	{
-		write(2, "Error\n", 6);
-		return 1;
-	}
-	t_list *a = NULL;
+    t_list *b = NULL;
 
-	int i = 1;
-	while (i < argc)
-	{
-		if (!is_valid_integer(argv[i]))
-		{
-			write(2, "Error\n", 6);
-			return 1;
-		}
-		i++;
-	}
-	insert_into_a(&a, argc, argv);
-	// printf("Before: ");
-	print_list(a);
-	sort_in_a(&a);
-	print_list(a);
-	// printf("After: ");
-	return 0;
+    if (!stack_sorted(*a))
+    {
+        if (stack_len(*a) == 2)
+            sa(a);
+        else if (stack_len(*a) == 3)
+            sort_three(a);
+        else
+            sort_stacks(a, &b);
+    }
+    print_list(*a);
+    free_stack(a);
+}
+
+int main(int argc, char **argv)
+{
+    t_list *a = NULL;
+
+    if (argc < 2 || (argc == 2 && !argv[1][0]))
+        return (1);
+    if (argc == 2)
+        argv = split(argv[1], ' ');
+    init_stack_a(&a, argv + 1);
+    push_swap(&a);
+    return (0);
 }

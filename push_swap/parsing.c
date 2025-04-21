@@ -85,3 +85,16 @@ int	ft_lstsize(t_list *lst)
 	}
 	return (size);
 }
+int find_min(t_list *stack)
+{
+    int min;
+
+    min = stack->value;
+    while (stack)
+    {
+        if (stack->value < min)
+            min = stack->value;
+        stack = stack->next;
+    }
+    return (min);
+}

@@ -61,29 +61,12 @@ int	higher_nbr(t_list *a)
 	return (value);
 }
 
-void	sort_in_a(t_list **a)
+void    sort_three(t_list **a)
 {
-	t_list	*mid;
-
-	mid = (*a)->next;
-	if ((*a) == NULL || (*a)->next == NULL)
-		return ;
-	if ((*a)->value == higher_nbr(*a))
-	{
-		ra(a);
-		if (mid->value > mid->next->value)
-			sa(a);
-	}
-	else if ((*a)->value < mid->value)
-	{
-		if (mid->value > mid->next->value)
-		{
-			rra(a);
-			sa(a);
-		}
-		else
-			rra(a);
-	}
-	else
-		sa(a);
+    if ((*a)->value > (*a)->next->value)
+        sa(a);
+    if ((*a)->next->value > (*a)->next->next->value)
+        rra(a);
+    if ((*a)->value > (*a)->next->value)
+        sa(a);
 }
