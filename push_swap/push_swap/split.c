@@ -2,65 +2,75 @@
 
 static int	count_words(char *s, char c)
 {
-	int	count;
-	int	in_word;
+	int		count;
+	int	inside_word;
 
 	count = 0;
-	in_word = 0;
 	while (*s)
 	{
-		if (*s != c && !in_word)
+		inside_word = 0;
+		while (*s == c)
+			++s;
+		while (*s != c && *s)
 		{
-			in_word = 1;
-			count++;
+			if (!inside_word)
+			{
+				++count;
+				inside_word = 1;
+			}
+			++s;
 		}
-		else if (*s == c)
-			in_word = 0;
-		s++;
 	}
 	return (count);
 }
 
 static char	*get_next_word(char *s, char c)
 {
-	static int	cursor;
-	char		*word;
+	static int	cursor = 0;
+	char		*next_word;
 	int			len;
 	int			i;
 
 	len = 0;
-	while (s[cursor] == c)
-		cursor++;
-	while (s[cursor + len] != c && s[cursor + len])
-		len++;
-	word = malloc(len + 1);
-	if (!word)
-		return (NULL);
 	i = 0;
+	while (s[cursor] == c)
+		++cursor;
+	while (s[cursor + len] != c && s[cursor + len])
+		++len;
+	next_word = malloc((size_t)len + 1);
+	if (!next_word)
+		return (NULL);
 	while (s[cursor] != c && s[cursor])
-		word[i++] = s[cursor++];
-	word[i] = '\0';
-	return (word);
+		next_word[i++] = s[cursor++];
+	next_word[i] = '\0';
+	return (next_word);
 }
 
 char	**split(char *s, char c)
 {
-	char	**result;
-	int		words;
+	int		words_count;
+	char	**result_array;
 	int		i;
 
-	words = count_words(s, c);
-	result = malloc(sizeof(char *) * (words + 1));
-	if (!result)
-		return (NULL);
 	i = 0;
-	while (i < words)
+	words_count = count_words(s, c);
+	if (!words_count)
+		exit(1);
+	result_array = malloc(sizeof(char *) * (size_t)(words_count + 2));
+	if (!result_array)
+		return (NULL);
+	while (words_count-- >= 0)
 	{
-		result[i] = get_next_word(s, c);
-		if (!result[i])
-			return (NULL);
-		i++;
+		if (i == 0)
+		{
+			result_array[i] = malloc(1);
+			if (!result_array[i])
+				return (NULL);
+			result_array[i++][0] = '\0';
+			continue ;
+		}
+		result_array[i++] = get_next_word(s, c);
 	}
-	result[i] = NULL;
-	return (result);
+	result_array[i] = NULL;
+	return (result_array);
 }

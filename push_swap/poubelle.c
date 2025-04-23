@@ -1,11 +1,10 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
 
 typedef struct s_list
 {
-	int				value;
+	int				nbr;
 	int				index;
 	int				push_cost;
 	int				above_median;
@@ -15,65 +14,80 @@ typedef struct s_list
 	struct s_list	*prev;
 }	t_list;
 
-int	error_syntax(char *str_n);
-int	error_duplicate(t_list *a, int n);
-void	free_stack(t_list **stack);
-void	free_errors(t_list **a);
-void	init_stack_a(t_list **a, char **argv);
-char	**split(char *s, char c);
-void	init_nodes_a(t_list *a, t_list *b);
-void	init_nodes_b(t_list *a, t_list *b);
-void	current_index(t_list *stack);
-void	set_cheapest(t_list *stack);
-t_list	*get_cheapest(t_list *stack);
-void	prep_for_push(t_list **s, t_list *n, char c);
-int	stack_len(t_list *stack);
-t_list	*find_last(t_list *stack);
-int	stack_sorted(t_list *stack);
-t_list	*find_min(t_list *stack);
-t_list	*find_max(t_list *stack);
-void	sa(t_list **a, int print);
-void	sb(t_list **b, int print);
-void	ss(t_list **a, t_list **b, int print);
-void	ra(t_list **a, int print);
-void	rb(t_list **b, int print);
-void	rr(t_list **a, t_list **b, int print);
-void	rra(t_list **a, int print);
-void	rrb(t_list **b, int print);
-void	rrr(t_list **a, t_list **b, int print);
-void	pa(t_list **a, t_list **b, int print);
-void	pb(t_list **b, t_list **a, int print);
-void	sort_three(t_list **a);
-void	sort_stacks(t_list **a, t_list **b);
+int				error_syntax(char *str_n);
+int				error_duplicate(t_list *a, int n);
+void			free_stack(t_list **stack);
+void			free_errors(t_list **a);
+void			init_stack_a(t_list **a, char **argv);
+char			**split(char *s, char c);
+void			init_nodes_a(t_list *a, t_list *b);
+void			init_nodes_b(t_list *a, t_list *b);
+void			current_index(t_list *stack);
+void			set_cheapest(t_list *stack);
+t_list			*get_cheapest(t_list *stack);
+void			prep_for_push(t_list **s, t_list *n, char c);
+int				stack_len(t_list *stack);
+t_list			*find_last(t_list *stack);
+int				stack_sorted(t_list *stack);
+t_list			*find_min(t_list *stack);
+t_list			*find_max(t_list *stack);
+void			sa(t_list **a, int print);
+void			sb(t_list **b, int print);
+void			ss(t_list **a, t_list **b, int print);
+void			ra(t_list **a, int print);
+void			rb(t_list **b, int print);
+void			rr(t_list **a, t_list **b, int print);
+void			rra(t_list **a, int print);
+void			rrb(t_list **b, int print);
+void			rrr(t_list **a, t_list **b, int print);
+void			pa(t_list **a, t_list **b, int print);
+void			pb(t_list **b, t_list **a, int print);
+void			sort_three(t_list **a);
+void			sort_stacks(t_list **a, t_list **b);
 
-void	ft_putstr(char *str)
+void	ft_putchar(char c)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
+	write(1, &c, 1);
 }
 
-int	ft_isdigit(int c)
+void	ft_putstr(char *s)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
+	while (*s)
+		ft_putchar(*s++);
+}
+
+void	ft_putnbr(int n)
+{
+	if (n == -2147483648)
+	{
+		ft_putstr("-2147483648");
+		return ;
+	}
+	if (n < 0)
+	{
+		ft_putchar('-');
+		n = -n;
+	}
+	if (n >= 10)
+		ft_putnbr(n / 10);
+	ft_putchar(n % 10 + '0');
 }
 
 int	error_syntax(char *str_n)
 {
-	if (!(*str_n == '+' || *str_n == '-' || (*str_n >= '0' && *str_n <= '9')))
+	if (!(*str_n == '+'
+			|| *str_n == '-'
+			|| (*str_n >= '0' && *str_n <= '9')))
 		return (1);
-	if ((*str_n == '+' || *str_n == '-') && !(str_n[1] >= '0' && str_n[1] <= '9'))
+	if ((*str_n == '+'
+			|| *str_n == '-')
+		&& !(str_n[1] >= '0' && str_n[1] <= '9'))
 		return (1);
 	while (*++str_n)
-		if (!ft_isdigit(*str_n))
+	{
+		if (!(*str_n >= '0' && *str_n <= '9'))
 			return (1);
+	}
 	return (0);
 }
 
@@ -83,7 +97,7 @@ int	error_duplicate(t_list *a, int n)
 		return (0);
 	while (a)
 	{
-		if (a->value == n)
+		if (a->nbr == n)
 			return (1);
 		a = a->next;
 	}
@@ -126,7 +140,10 @@ void	current_index(t_list *stack)
 	while (stack)
 	{
 		stack->index = i;
-		stack->above_median = i <= median;
+		if (i <= median)
+			stack->above_median = 1;
+		else
+			stack->above_median = 0;
 		stack = stack->next;
 		++i;
 	}
@@ -136,24 +153,25 @@ static void	set_target_a(t_list *a, t_list *b)
 {
 	t_list	*current_b;
 	t_list	*target_node;
-	long	best_match;
+	long	best_match_index;
 
 	while (a)
 	{
-		best_match = LONG_MIN;
+		best_match_index = LONG_MIN;
 		current_b = b;
 		while (current_b)
 		{
-			if (current_b->value < a->value && current_b->value > best_match)
+			if (current_b->nbr < a->nbr && current_b->nbr > best_match_index)
 			{
-				best_match = current_b->value;
+				best_match_index = current_b->nbr;
 				target_node = current_b;
 			}
 			current_b = current_b->next;
 		}
-		a->target_node = target_node;
-		if (best_match == LONG_MIN)
+		if (best_match_index == LONG_MIN)
 			a->target_node = find_max(b);
+		else
+			a->target_node = target_node;
 		a = a->next;
 	}
 }
@@ -168,29 +186,29 @@ static void	cost_analysis_a(t_list *a, t_list *b)
 	while (a)
 	{
 		a->push_cost = a->index;
-		if (!a->above_median)
-			a->push_cost = len_a - a->index;
+		if (!(a->above_median))
+			a->push_cost = len_a - (a->index);
 		if (a->target_node->above_median)
 			a->push_cost += a->target_node->index;
 		else
-			a->push_cost += len_b - a->target_node->index;
+			a->push_cost += len_b - (a->target_node->index);
 		a = a->next;
 	}
 }
 
 void	set_cheapest(t_list *stack)
 {
-	long		cheapest_val;
+	long	cheapest_value;
 	t_list	*cheapest_node;
 
 	if (!stack)
 		return ;
-	cheapest_val = LONG_MAX;
+	cheapest_value = LONG_MAX;
 	while (stack)
 	{
-		if (stack->push_cost < cheapest_val)
+		if (stack->push_cost < cheapest_value)
 		{
-			cheapest_val = stack->push_cost;
+			cheapest_value = stack->push_cost;
 			cheapest_node = stack;
 		}
 		stack = stack->next;
@@ -211,24 +229,25 @@ static void	set_target_b(t_list *a, t_list *b)
 {
 	t_list	*current_a;
 	t_list	*target_node;
-	long	best_match;
+	long	best_match_index;
 
 	while (b)
 	{
-		best_match = LONG_MAX;
+		best_match_index = LONG_MAX;
 		current_a = a;
 		while (current_a)
 		{
-			if (current_a->value > b->value && current_a->value < best_match)
+			if (current_a->nbr > b->nbr && current_a->nbr < best_match_index)
 			{
-				best_match = current_a->value;
+				best_match_index = current_a->nbr;
 				target_node = current_a;
 			}
 			current_a = current_a->next;
 		}
-		b->target_node = target_node;
-		if (best_match == LONG_MAX)
+		if (best_match_index == LONG_MAX)
 			b->target_node = find_min(a);
+		else
+			b->target_node = target_node;
 		b = b->next;
 	}
 }
@@ -242,77 +261,87 @@ void	init_nodes_b(t_list *a, t_list *b)
 
 static int	count_words(char *s, char c)
 {
-	int	count;
-	int	in_word;
+	int		count;
+	int	inside_word;
 
 	count = 0;
-	in_word = 0;
 	while (*s)
 	{
-		if (*s != c && !in_word)
+		inside_word = 0;
+		while (*s == c)
+			++s;
+		while (*s != c && *s)
 		{
-			in_word = 1;
-			count++;
+			if (!inside_word)
+			{
+				++count;
+				inside_word = 1;
+			}
+			++s;
 		}
-		else if (*s == c)
-			in_word = 0;
-		s++;
 	}
 	return (count);
 }
 
 static char	*get_next_word(char *s, char c)
 {
-	static int	cursor;
-	char		*word;
+	static int	cursor = 0;
+	char		*next_word;
 	int			len;
 	int			i;
 
 	len = 0;
-	while (s[cursor] == c)
-		cursor++;
-	while (s[cursor + len] != c && s[cursor + len])
-		len++;
-	word = malloc(len + 1);
-	if (!word)
-		return (NULL);
 	i = 0;
+	while (s[cursor] == c)
+		++cursor;
+	while (s[cursor + len] != c && s[cursor + len])
+		++len;
+	next_word = malloc((size_t)len + 1);
+	if (!next_word)
+		return (NULL);
 	while (s[cursor] != c && s[cursor])
-		word[i++] = s[cursor++];
-	word[i] = '\0';
-	return (word);
+		next_word[i++] = s[cursor++];
+	next_word[i] = '\0';
+	return (next_word);
 }
 
 char	**split(char *s, char c)
 {
-	char	**result;
-	int		words;
+	int		words_count;
+	char	**result_array;
 	int		i;
 
-	words = count_words(s, c);
-	result = malloc(sizeof(char *) * (words + 1));
-	if (!result)
-		return (NULL);
 	i = 0;
-	while (i < words)
+	words_count = count_words(s, c);
+	if (!words_count)
+		exit(1);
+	result_array = malloc(sizeof(char *) * (size_t)(words_count + 2));
+	if (!result_array)
+		return (NULL);
+	while (words_count-- >= 0)
 	{
-		result[i] = get_next_word(s, c);
-		if (!result[i])
-			return (NULL);
-		i++;
+		if (i == 0)
+		{
+			result_array[i] = malloc(1);
+			if (!result_array[i])
+				return (NULL);
+			result_array[i++][0] = '\0';
+			continue ;
+		}
+		result_array[i++] = get_next_word(s, c);
 	}
-	result[i] = NULL;
-	return (result);
+	result_array[i] = NULL;
+	return (result_array);
 }
 
 static long	ft_atol(const char *s)
 {
-	long	res;
+	long	result;
 	int		sign;
 
-	res = 0;
+	result = 0;
 	sign = 1;
-	while (*s == ' ' || (*s >= 9 && *s <= 13))
+	while (*s == ' ' || (*s >= '\t' && *s <= '\r'))
 		s++;
 	if (*s == '-' || *s == '+')
 	{
@@ -320,31 +349,34 @@ static long	ft_atol(const char *s)
 			sign = -1;
 		s++;
 	}
-	while (ft_isdigit(*s))
-		res = res * 10 + (*s++ - '0');
-	return (res * sign);
+	while (*s >= '0' && *s <= '9')
+		result = result * 10 + (*s++ - '0');
+	return (result * sign);
 }
 
 static void	append_node(t_list **stack, int n)
 {
 	t_list	*node;
-	t_list	*last;
+	t_list	*last_node;
 
+	if (!stack)
+		return ;
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return ;
-	node->value = n;
 	node->next = NULL;
-	if (!*stack)
+	node->nbr = n;
+	node->cheapest = 0;
+	if (!(*stack))
 	{
 		*stack = node;
 		node->prev = NULL;
 	}
 	else
 	{
-		last = find_last(*stack);
-		last->next = node;
-		node->prev = last;
+		last_node = find_last(*stack);
+		last_node->next = node;
+		node->prev = last_node;
 	}
 }
 
@@ -370,6 +402,8 @@ void	init_stack_a(t_list **a, char **argv)
 
 t_list	*get_cheapest(t_list *stack)
 {
+	if (!stack)
+		return (NULL);
 	while (stack)
 	{
 		if (stack->cheapest)
@@ -379,20 +413,20 @@ t_list	*get_cheapest(t_list *stack)
 	return (NULL);
 }
 
-void	prep_for_push(t_list **stack, t_list *top, char name)
+void	prep_for_push(t_list **stack, t_list *top_node, char stack_name)
 {
-	while (*stack != top)
+	while (*stack != top_node)
 	{
-		if (name == 'a')
+		if (stack_name == 'a')
 		{
-			if (top->above_median)
+			if (top_node->above_median)
 				ra(stack, 0);
 			else
 				rra(stack, 0);
 		}
-		else if (name == 'b')
+		else if (stack_name == 'b')
 		{
-			if (top->above_median)
+			if (top_node->above_median)
 				rb(stack, 0);
 			else
 				rrb(stack, 0);
@@ -407,8 +441,8 @@ int	stack_len(t_list *stack)
 	count = 0;
 	while (stack)
 	{
-		count++;
 		stack = stack->next;
+		count++;
 	}
 	return (count);
 }
@@ -428,7 +462,7 @@ int	stack_sorted(t_list *stack)
 		return (1);
 	while (stack->next)
 	{
-		if (stack->value > stack->next->value)
+		if (stack->nbr > stack->next->nbr)
 			return (0);
 		stack = stack->next;
 	}
@@ -440,12 +474,14 @@ t_list	*find_min(t_list *stack)
 	long	min;
 	t_list	*min_node;
 
+	if (!stack)
+		return (NULL);
 	min = LONG_MAX;
 	while (stack)
 	{
-		if (stack->value < min)
+		if (stack->nbr < min)
 		{
-			min = stack->value;
+			min = stack->nbr;
 			min_node = stack;
 		}
 		stack = stack->next;
@@ -458,12 +494,14 @@ t_list	*find_max(t_list *stack)
 	long	max;
 	t_list	*max_node;
 
+	if (!stack)
+		return (NULL);
 	max = LONG_MIN;
 	while (stack)
 	{
-		if (stack->value > max)
+		if (stack->nbr > max)
 		{
-			max = stack->value;
+			max = stack->nbr;
 			max_node = stack;
 		}
 		stack = stack->next;
@@ -473,22 +511,25 @@ t_list	*find_max(t_list *stack)
 
 static void	push(t_list **dst, t_list **src)
 {
-	t_list	*node;
+	t_list	*push_node;
 
 	if (!*src)
 		return ;
-	node = *src;
+	push_node = *src;
 	*src = (*src)->next;
 	if (*src)
 		(*src)->prev = NULL;
-	node->prev = NULL;
+	push_node->prev = NULL;
 	if (!*dst)
-		*dst = node;
+	{
+		*dst = push_node;
+		push_node->next = NULL;
+	}
 	else
 	{
-		node->next = *dst;
-		(*dst)->prev = node;
-		*dst = node;
+		push_node->next = *dst;
+		push_node->next->prev = push_node;
+		*dst = push_node;
 	}
 }
 
@@ -544,16 +585,16 @@ void	rrr(t_list **a, t_list **b, int print)
 
 static void	rotate(t_list **stack)
 {
-	t_list	*last;
+	t_list	*last_node;
 
 	if (!*stack || !(*stack)->next)
 		return ;
-	last = find_last(*stack);
-	last->next = *stack;
+	last_node = find_last(*stack);
+	last_node->next = *stack;
 	*stack = (*stack)->next;
 	(*stack)->prev = NULL;
-	last->next->prev = last;
-	last->next->next = NULL;
+	last_node->next->prev = last_node;
+	last_node->next->next = NULL;
 }
 
 void	ra(t_list **a, int print)
@@ -588,8 +629,8 @@ static void	swap(t_list **head)
 	*head = (*head)->next;
 	tmp->next = (*head)->next;
 	(*head)->next = tmp;
-	(*head)->prev = NULL;
 	tmp->prev = *head;
+	(*head)->prev = NULL;
 	if (tmp->next)
 		tmp->next->prev = tmp;
 }
@@ -618,30 +659,45 @@ void	ss(t_list **a, t_list **b, int print)
 
 void	sort_three(t_list **a)
 {
-	t_list	*max;
+	t_list	*biggest_node;
 
-	max = find_max(*a);
-	if (max == *a)
+	biggest_node = find_max(*a);
+	if (biggest_node == *a)
 		ra(a, 0);
-	else if ((*a)->next == max)
+	else if ((*a)->next == biggest_node)
 		rra(a, 0);
-	if ((*a)->value > (*a)->next->value)
+	if ((*a)->nbr > (*a)->next->nbr)
 		sa(a, 0);
+}
+
+static void	rotate_both(t_list **a, t_list **b, t_list *cheapest_node)
+{
+	while (*b != cheapest_node->target_node && *a != cheapest_node)
+		rr(a, b, 0);
+	current_index(*a);
+	current_index(*b);
+}
+
+static void	rev_rotate_both(t_list **a, t_list **b, t_list *cheapest_node)
+{
+	while (*b != cheapest_node->target_node && *a != cheapest_node)
+		rrr(a, b, 0);
+	current_index(*a);
+	current_index(*b);
 }
 
 static void	move_a_to_b(t_list **a, t_list **b)
 {
-	t_list	*cheapest;
+	t_list	*cheapest_node;
 
-	cheapest = get_cheapest(*a);
-	if (cheapest->above_median && cheapest->target_node->above_median)
-		while (*a != cheapest && *b != cheapest->target_node)
-			rr(a, b, 0);
-	else if (!cheapest->above_median && !cheapest->target_node->above_median)
-		while (*a != cheapest && *b != cheapest->target_node)
-			rrr(a, b, 0);
-	prep_for_push(a, cheapest, 'a');
-	prep_for_push(b, cheapest->target_node, 'b');
+	cheapest_node = get_cheapest(*a);
+	if (cheapest_node->above_median && cheapest_node->target_node->above_median)
+		rotate_both(a, b, cheapest_node);
+	else if (!(cheapest_node->above_median)
+		&& !(cheapest_node->target_node->above_median))
+		rev_rotate_both(a, b, cheapest_node);
+	prep_for_push(a, cheapest_node, 'a');
+	prep_for_push(b, cheapest_node->target_node, 'b');
 	pb(b, a, 0);
 }
 
@@ -653,12 +709,9 @@ static void	move_b_to_a(t_list **a, t_list **b)
 
 static void	min_on_top(t_list **a)
 {
-	t_list	*min;
-
-	min = find_min(*a);
-	while (*a != min)
+	while ((*a)->nbr != find_min(*a)->nbr)
 	{
-		if (min->above_median)
+		if (find_min(*a)->above_median)
 			ra(a, 0);
 		else
 			rra(a, 0);
@@ -693,10 +746,11 @@ void	print_list(t_list *a)
 {
 	while (a)
 	{
-		printf("%d ", a->value);
+		ft_putnbr(a->nbr);
+		ft_putchar(' ');
 		a = a->next;
 	}
-	printf("\n");
+	ft_putchar('\n');
 }
 
 int	main(int argc, char **argv)
@@ -708,11 +762,9 @@ int	main(int argc, char **argv)
 	b = NULL;
 	if (argc == 1 || (argc == 2 && !argv[1][0]))
 		return (1);
-	if (argc == 2)
+	else if (argc == 2)
 		argv = split(argv[1], ' ');
-	init_stack_a(&a, argv + (argc == 2 ? 0 : 1));
-	if (argc == 2)
-		free(argv);
+	init_stack_a(&a, argv + 1);
 	if (!stack_sorted(a))
 	{
 		if (stack_len(a) == 2)
@@ -722,7 +774,7 @@ int	main(int argc, char **argv)
 		else
 			sort_stacks(&a, &b);
 	}
-    print_list(a);
+	print_list(a);
 	free_stack(&a);
 	return (0);
 }

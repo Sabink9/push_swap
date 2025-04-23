@@ -7,8 +7,8 @@ int	stack_len(t_list *stack)
 	count = 0;
 	while (stack)
 	{
-		count++;
 		stack = stack->next;
+		count++;
 	}
 	return (count);
 }
@@ -40,6 +40,8 @@ t_list	*find_min(t_list *stack)
 	long	min;
 	t_list	*min_node;
 
+	if (!stack)
+		return (NULL);
 	min = LONG_MAX;
 	while (stack)
 	{
@@ -58,6 +60,8 @@ t_list	*find_max(t_list *stack)
 	long	max;
 	t_list	*max_node;
 
+	if (!stack)
+		return (NULL);
 	max = LONG_MIN;
 	while (stack)
 	{

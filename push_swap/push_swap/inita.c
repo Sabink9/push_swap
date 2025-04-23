@@ -12,7 +12,10 @@ void	current_index(t_list *stack)
 	while (stack)
 	{
 		stack->index = i;
-		stack->above_median = i <= median;
+		if (i <= median)
+			stack->above_median = 1;
+		else
+			stack->above_median = 0;
 		stack = stack->next;
 		++i;
 	}
@@ -22,24 +25,25 @@ static void	set_target_a(t_list *a, t_list *b)
 {
 	t_list	*current_b;
 	t_list	*target_node;
-	long	best_match;
+	long	best_match_index;
 
 	while (a)
 	{
-		best_match = LONG_MIN;
+		best_match_index = LONG_MIN;
 		current_b = b;
 		while (current_b)
 		{
-			if (current_b->value < a->value && current_b->value > best_match)
+			if (current_b->value < a->value && current_b->value > best_match_index)
 			{
-				best_match = current_b->value;
+				best_match_index = current_b->value;
 				target_node = current_b;
 			}
 			current_b = current_b->next;
 		}
-		a->target_node = target_node;
-		if (best_match == LONG_MIN)
+		if (best_match_index == LONG_MIN)
 			a->target_node = find_max(b);
+		else
+			a->target_node = target_node;
 		a = a->next;
 	}
 }
@@ -54,29 +58,29 @@ static void	cost_analysis_a(t_list *a, t_list *b)
 	while (a)
 	{
 		a->push_cost = a->index;
-		if (!a->above_median)
-			a->push_cost = len_a - a->index;
+		if (!(a->above_median))
+			a->push_cost = len_a - (a->index);
 		if (a->target_node->above_median)
 			a->push_cost += a->target_node->index;
 		else
-			a->push_cost += len_b - a->target_node->index;
+			a->push_cost += len_b - (a->target_node->index);
 		a = a->next;
 	}
 }
 
 void	set_cheapest(t_list *stack)
 {
-	long		cheapest_val;
+	long	cheapest_value;
 	t_list	*cheapest_node;
 
 	if (!stack)
 		return ;
-	cheapest_val = LONG_MAX;
+	cheapest_value = LONG_MAX;
 	while (stack)
 	{
-		if (stack->push_cost < cheapest_val)
+		if (stack->push_cost < cheapest_value)
 		{
-			cheapest_val = stack->push_cost;
+			cheapest_value = stack->push_cost;
 			cheapest_node = stack;
 		}
 		stack = stack->next;

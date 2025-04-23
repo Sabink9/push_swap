@@ -1,45 +1,48 @@
 #include "../push_swap.h"
 
-static long ft_atoi(const char *s)
+static long	ft_atol(const char *s)
 {
-    long    res;
-    int     sign;
+	long	result;
+	int		sign;
 
-    res = 0;
-    sign = 1;
-    while (*s == ' ' || (*s >= '\t' && *s <= '\r'))
-        s++;
-    if (*s == '-' || *s == '+')
-    {
-        if (*s == '-')
-            sign = -1;
-        s++;
-    }
-    while (ft_isdigit(*s))
-        res = res * 10 + (*s++ - '0');
-    return (res * sign);
+	result = 0;
+	sign = 1;
+	while (*s == ' ' || (*s >= '\t' && *s <= '\r'))
+		s++;
+	if (*s == '-' || *s == '+')
+	{
+		if (*s == '-')
+			sign = -1;
+		s++;
+	}
+	while (*s >= '0' && *s <= '9')
+		result = result * 10 + (*s++ - '0');
+	return (result * sign);
 }
 
 static void	append_node(t_list **stack, int n)
 {
 	t_list	*node;
-	t_list	*last;
+	t_list	*last_node;
 
+	if (!stack)
+		return ;
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return ;
-	node->value = n;
 	node->next = NULL;
-	if (!*stack)
+	node->value = n;
+	node->cheapest = 0;
+	if (!(*stack))
 	{
 		*stack = node;
 		node->prev = NULL;
 	}
 	else
 	{
-		last = find_last(*stack);
-		last->next = node;
-		node->prev = last;
+		last_node = find_last(*stack);
+		last_node->next = node;
+		node->prev = last_node;
 	}
 }
 
@@ -53,7 +56,7 @@ void	init_stack_a(t_list **a, char **argv)
 	{
 		if (error_syntax(argv[i]))
 			free_errors(a);
-		n = ft_atoi(argv[i]);
+		n = ft_atol(argv[i]);
 		if (n > INT_MAX || n < INT_MIN)
 			free_errors(a);
 		if (error_duplicate(*a, (int)n))
@@ -65,6 +68,8 @@ void	init_stack_a(t_list **a, char **argv)
 
 t_list	*get_cheapest(t_list *stack)
 {
+	if (!stack)
+		return (NULL);
 	while (stack)
 	{
 		if (stack->cheapest)
@@ -74,23 +79,23 @@ t_list	*get_cheapest(t_list *stack)
 	return (NULL);
 }
 
-void	prep_for_push(t_list **stack, t_list *top, char name)
+void	prep_for_push(t_list **stack, t_list *top_node, char stack_name)
 {
-	while (*stack != top)
+	while (*stack != top_node)
 	{
-		if (name == 'a')
+		if (stack_name == 'a')
 		{
-			if (top->above_median)
-				ra(stack);
+			if (top_node->above_median)
+				ra(stack, 0);
 			else
-				rra(stack);
+				rra(stack, 0);
 		}
-		else if (name == 'b')
+		else if (stack_name == 'b')
 		{
-			if (top->above_median)
-				rb(stack);
+			if (top_node->above_median)
+				rb(stack, 0);
 			else
-				rrb(stack);
+				rrb(stack, 0);
 		}
 	}
 }

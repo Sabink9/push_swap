@@ -1,35 +1,31 @@
 #include "../push_swap.h"
 
-void    ft_putstr(char *str)
+void	ft_putchar(char c)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        write(1, &str[i], 1);
-        i++;
-    }
+	write(1, &c, 1);
 }
 
-void    ft_putchar(char c)
+void	ft_putstr(char *s)
 {
-    write(1, &c, 1);
+	while (*s)
+		ft_putchar(*s++);
 }
 
-void    ft_putnbr(int n)
+void	ft_putnbr(int n)
 {
-    long nb;
-
-    nb = n;
-    if (nb < 0)
-    {
-        ft_putchar('-');
-        nb = -nb;
-    }
-    if (nb > 9)
-        ft_putnbr(nb / 10);
-    ft_putchar((nb % 10) + '0');
+	if (n == -2147483648)
+	{
+		ft_putstr("-2147483648");
+		return ;
+	}
+	if (n < 0)
+	{
+		ft_putchar('-');
+		n = -n;
+	}
+	if (n >= 10)
+		ft_putnbr(n / 10);
+	ft_putchar(n % 10 + '0');
 }
 
 int     ft_isdigit(int c)

@@ -2,24 +2,18 @@
 
 void	reverse_rotate(t_list **x_stack)
 {
-	t_list	*current;
-	t_list	*previous;
 	t_list	*last;
 
-	current = *x_stack;
-	previous = NULL;
-	if (*x_stack == NULL || (*x_stack)->next == NULL)
+	if (!*x_stack || !(*x_stack)->next)
 		return ;
-	while (current->next != NULL)
-	{
-		previous = current;
-		current = current->next;
-	}
-	last = current;
-	previous->next = NULL;
+	last = find_last(*x_stack);
+	last->prev->next = NULL;
+	last->prev = NULL;
 	last->next = *x_stack;
+	(*x_stack)->prev = last;
 	*x_stack = last;
 }
+
 
 void	rra(t_list **a)
 {

@@ -5,14 +5,14 @@ void	rotate(t_list **x_stack)
 	t_list	*first;
 	t_list	*last;
 
-	if (*x_stack == NULL || (*x_stack)->next == NULL)
+	if (!*x_stack || !(*x_stack)->next)
 		return ;
 	first = *x_stack;
-	last = *x_stack;
-	while (last->next != NULL)
-		last = last->next;
+	last = find_last(*x_stack);
 	*x_stack = first->next;
+	(*x_stack)->prev = NULL;
 	last->next = first;
+	first->prev = last;
 	first->next = NULL;
 }
 

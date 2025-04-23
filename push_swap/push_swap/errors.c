@@ -1,28 +1,34 @@
 #include "../push_swap.h"
 
-int     error_syntax(char *s)
+int	error_syntax(char *str_n)
 {
-    if (!(*s == '+' || *s == '-' || ft_isdigit(*s)))
-        return (1);
-    if ((*s == '+' || *s == '-') && !ft_isdigit(s[1]))
-        return (1);
-    while (*++s)
-        if (!ft_isdigit(*s))
-            return (1);
-    return (0);
+	if (!(*str_n == '+'
+			|| *str_n == '-'
+			|| (*str_n >= '0' && *str_n <= '9')))
+		return (1);
+	if ((*str_n == '+'
+			|| *str_n == '-')
+		&& !(str_n[1] >= '0' && str_n[1] <= '9'))
+		return (1);
+	while (*++str_n)
+	{
+		if (!(*str_n >= '0' && *str_n <= '9'))
+			return (1);
+	}
+	return (0);
 }
 
-int     error_duplicate(t_list *a, int n)
+int	error_duplicate(t_list *a, int n)
 {
-    if (!a)
-        return (0);
-    while (a)
-    {
-        if (a->value == n)
-            return (1);
-        a = a->next;
-    }
-    return (0);
+	if (!a)
+		return (0);
+	while (a)
+	{
+		if (a->value == n)
+			return (1);
+		a = a->next;
+	}
+	return (0);
 }
 
 void	free_stack(t_list **stack)
@@ -42,9 +48,9 @@ void	free_stack(t_list **stack)
 	*stack = NULL;
 }
 
-void    free_errors(t_list **a)
+void	free_errors(t_list **a)
 {
-    free_stack(a);
-    ft_putstr("Error\n");
-    exit(1);
+	free_stack(a);
+	ft_putstr("Error\n");
+	exit(1);
 }

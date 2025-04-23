@@ -5,12 +5,16 @@ void	swap(t_list **head)
 	t_list	*first;
 	t_list	*second;
 
+	if (!*head || !(*head)->next)
+		return ;
 	first = *head;
 	second = first->next;
-	if (*head == NULL || (*head)->next == NULL)
-		return ;
 	first->next = second->next;
+	if (second->next)
+		second->next->prev = first;
+	second->prev = NULL;
 	second->next = first;
+	first->prev = second;
 	*head = second;
 }
 

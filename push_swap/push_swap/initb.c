@@ -4,24 +4,25 @@ static void	set_target_b(t_list *a, t_list *b)
 {
 	t_list	*current_a;
 	t_list	*target_node;
-	long	best_match;
+	long	best_match_index;
 
 	while (b)
 	{
-		best_match = LONG_MAX;
+		best_match_index = LONG_MAX;
 		current_a = a;
 		while (current_a)
 		{
-			if (current_a->value > b->value && current_a->value < best_match)
+			if (current_a->value > b->value && current_a->value < best_match_index)
 			{
-				best_match = current_a->value;
+				best_match_index = current_a->value;
 				target_node = current_a;
 			}
 			current_a = current_a->next;
 		}
-		b->target_node = target_node;
-		if (best_match == LONG_MAX)
+		if (best_match_index == LONG_MAX)
 			b->target_node = find_min(a);
+		else
+			b->target_node = target_node;
 		b = b->next;
 	}
 }

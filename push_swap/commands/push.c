@@ -8,11 +8,16 @@ void	push(t_list **src, t_list **dest)
 		return ;
 	temp = *src;
 	*src = (*src)->next;
+	if (*src)
+		(*src)->prev = NULL;
+	temp->prev = NULL;
+	if (*dest)
+		(*dest)->prev = temp;
 	temp->next = *dest;
 	*dest = temp;
 }
 
-void	pa(t_list **a, t_list **b)
+void	pa(t_list **b, t_list **a)
 {
 	push(b, a);
 	ft_putstr("pa\n");
