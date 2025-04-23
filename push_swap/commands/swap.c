@@ -1,38 +1,39 @@
 #include "../push_swap.h"
 
-void	swap(t_list **head)
+static void	swap(t_list **head)
 {
-	t_list	*first;
-	t_list	*second;
+	t_list	*tmp;
 
 	if (!*head || !(*head)->next)
 		return ;
-	first = *head;
-	second = first->next;
-	first->next = second->next;
-	if (second->next)
-		second->next->prev = first;
-	second->prev = NULL;
-	second->next = first;
-	first->prev = second;
-	*head = second;
+	tmp = *head;
+	*head = (*head)->next;
+	tmp->next = (*head)->next;
+	(*head)->next = tmp;
+	tmp->prev = *head;
+	(*head)->prev = NULL;
+	if (tmp->next)
+		tmp->next->prev = tmp;
 }
 
-void	sa(t_list **a)
+void	sa(t_list **a, int print)
 {
 	swap(a);
-	ft_putstr("sa\n");
+	if (!print)
+		ft_putstr("sa\n");
 }
 
-void	sb(t_list **b)
+void	sb(t_list **b, int print)
 {
 	swap(b);
-	ft_putstr("sb\n");
+	if (!print)
+		ft_putstr("sb\n");
 }
 
-void	ss(t_list **a, t_list **b)
+void	ss(t_list **a, t_list **b, int print)
 {
 	swap(a);
 	swap(b);
-	ft_putstr("ss\n");
+	if (!print)
+		ft_putstr("ss\n");
 }

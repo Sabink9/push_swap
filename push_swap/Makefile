@@ -1,27 +1,39 @@
-PUSHC = push_swap.c parsing.c functions.c extra_functions.c wrappers.c
-
-OBJ = $(PUSHC:.c=.o)
-
-NAME = push_swap
-
 CC = gcc
-
 CFLAGS = -Wall -Werror -Wextra
+RM = rm -f
+
+SRCS = commands/push.c \
+       commands/rev_rotate.c \
+       commands/rotate.c \
+       commands/swap.c \
+       core/errors.c \
+       core/ft_put.c \
+       core/inita.c \
+       core/initb.c \
+       core/move.c \
+       core/push_swap.c \
+       core/sort.c \
+       core/split.c \
+       core/stack.c \
+       core/utils.c
+
+OBJS = $(SRCS:.c=.o)
+NAME = push_swap
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-		$(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 %.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-		rm -f $(OBJ)
+	$(RM) $(OBJS)
 
 fclean: clean
-		rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: re clean fclean all
+.PHONY: all clean fclean re
