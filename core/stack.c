@@ -6,13 +6,13 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:52 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/02 13:08:42 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/02 16:14:12 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-static long	ft_atol(const char *s)
+static long	ft_atoi(const char *s)
 {
 	long	result;
 	int		sign;
@@ -68,7 +68,7 @@ void	init_stack_a(t_list **a, char **argv)
 	{
 		if (error_syntax(argv[i]))
 			free_errors(a);
-		n = ft_atol(argv[i]);
+		n = ft_atoi(argv[i]);
 		if (n > INT_MAX || n < INT_MIN)
 			free_errors(a);
 		if (error_duplicate(*a, (int)n))
