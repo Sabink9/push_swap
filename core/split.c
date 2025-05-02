@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:02:50 by saciurus          #+#    #+#             */
+/*   Updated: 2025/05/02 13:10:46 by saciurus         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../push_swap.h"
 
 static int	count_words(char *s, char c)
 {
 	int		count;
-	int	inside_word;
+	int		inside_word;
 
 	count = 0;
 	while (*s)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   inita.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 13:02:30 by saciurus          #+#    #+#             */
+/*   Updated: 2025/05/02 13:10:01 by saciurus         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../push_swap.h"
 
 void	current_index(t_list *stack)
@@ -25,22 +37,22 @@ static void	set_target_a(t_list *a, t_list *b)
 {
 	t_list	*current_b;
 	t_list	*target_node;
-	long	best_match_index;
+	long	best_m_i;
 
 	while (a)
 	{
-		best_match_index = LONG_MIN;
+		best_m_i = LONG_MIN;
 		current_b = b;
 		while (current_b)
 		{
-			if (current_b->value < a->value && current_b->value > best_match_index)
+			if (current_b->value < a->value && current_b->value > best_m_i)
 			{
-				best_match_index = current_b->value;
+				best_m_i = current_b->value;
 				target_node = current_b;
 			}
 			current_b = current_b->next;
 		}
-		if (best_match_index == LONG_MIN)
+		if (best_m_i == LONG_MIN)
 			a->target_node = find_max(b);
 		else
 			a->target_node = target_node;
