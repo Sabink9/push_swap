@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:50 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/26 16:52:53 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:37:46 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	free_result(char **result, int i)
 		free(result[i]);
 	free(result);
 }
-
 
 static int	count_words(char *s, char c)
 {
