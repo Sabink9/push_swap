@@ -6,11 +6,19 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:50 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/05 16:30:46 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:52:53 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
+
+void	free_result(char **result, int i)
+{
+	while (--i >= 0)
+		free(result[i]);
+	free(result);
+}
+
 
 static int	count_words(char *s, char c)
 {
@@ -77,7 +85,10 @@ char	**split(char *s, char c)
 	{
 		result[i] = get_next_word(&s, c);
 		if (!result[i])
+		{
+			free_result(result, i);
 			return (NULL);
+		}
 		i++;
 	}
 	result[i] = NULL;
