@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:16:40 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/02 14:15:13 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/27 16:31:56 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PUSH_SWAP_H
 
 # include <limits.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -79,7 +78,6 @@ void				set_cheapest(t_list *stack);
 //algorithms
 void				sort_three(t_list **a);
 void				sort_stacks(t_list **a, t_list **b);
-void				print_list(t_list *a);
 
 //aff
 void				ft_putstr(char *str);
