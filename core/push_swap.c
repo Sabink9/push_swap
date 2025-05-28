@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:39 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/28 17:05:42 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:10:34 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ int	main(int argc, char **argv)
 		}
 		free_split(split_argv);
 	}
-	else
-		return (init_stack_a(&a, argv + 1) ? 1 : 0);
+	else if (init_stack_a(&a, argv + 1))
+		return (1);
 	push_swap(&a);
 	free_stack(&a);
 	return (0);

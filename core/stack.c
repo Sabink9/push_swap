@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:52 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:55 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:08:39 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,17 @@ int	init_stack_a(t_list **a, char **argv)
 	while (argv[i])
 	{
 		if (error_syntax(argv[i]))
-			return free_errors(a);
+			return (free_errors(a));
 		n = ft_atoi(argv[i]);
 		if (n > INT_MAX || n < INT_MIN)
-			return free_errors(a);
+			return (free_errors(a));
 		if (error_duplicate(*a, (int)n))
-			return free_errors(a);
+			return (free_errors(a));
 		append_node(a, (int)n);
 		i++;
 	}
 	return (0);
 }
-
 
 t_list	*get_cheapest(t_list *stack)
 {
