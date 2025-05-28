@@ -6,11 +6,12 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:39 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/27 18:25:13 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:05:42 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
+
 //#include <stdio.h>
 
 void	push_swap(t_list **a)
@@ -43,7 +44,6 @@ int	main(int argc, char **argv)
 {
 	t_list	*a;
 	char	**split_argv;
-	int		i;
 
 	a = NULL;
 	if (argc == 1 || (argc == 2 && !argv[1][0]))
@@ -51,14 +51,17 @@ int	main(int argc, char **argv)
 	if (argc == 2)
 	{
 		split_argv = split(argv[1], ' ');
-		init_stack_a(&a, split_argv);
-		i = -1;
-		while (split_argv[++i])
-			free(split_argv[i]);
-		free(split_argv);
+		if (!split_argv)
+			return (1);
+		if (init_stack_a(&a, split_argv))
+		{
+			free_split(split_argv);
+			return (1);
+		}
+		free_split(split_argv);
 	}
 	else
-		init_stack_a(&a, argv + 1);
+		return (init_stack_a(&a, argv + 1) ? 1 : 0);
 	push_swap(&a);
 	free_stack(&a);
 	return (0);

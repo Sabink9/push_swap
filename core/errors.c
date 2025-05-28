@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 13:02:23 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/02 13:08:03 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:01:09 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	free_stack(t_list **stack)
 	*stack = NULL;
 }
 
-void	free_errors(t_list **a)
+int	free_errors(t_list **a)
 {
 	free_stack(a);
 	ft_putstr("Error\n");
-	exit(1);
+	return (1);
 }

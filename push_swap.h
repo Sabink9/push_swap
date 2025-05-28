@@ -6,7 +6,7 @@
 /*   By: saciurus <saciurus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 18:16:40 by saciurus          #+#    #+#             */
-/*   Updated: 2025/05/27 16:31:56 by saciurus         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:01:18 by saciurus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void				pb(t_list **b, t_list **a, int print);
 int					error_syntax(char *s);
 int					error_duplicate(t_list *a, int n);
 void				free_stack(t_list **stack);
-void				free_errors(t_list **a);
+int					free_errors(t_list **a);
+void				free_split(char **split);
 
 //split
 char				**split(char *s, char c);
-
 //stack
-void				init_stack_a(t_list **a, char **argv);
+int					init_stack_a(t_list **a, char **argv);
 t_list				*get_cheapest(t_list *stack);
 void				prep_for_push(t_list **stack, t_list *top, char name);
 
